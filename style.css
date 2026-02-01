@@ -1,0 +1,273 @@
+/* Birthday Meme Maker - mobile-first, Russian/English support */
+
+:root {
+  --bg: #1a1a2e;
+  --surface: #16213e;
+  --accent: #e94560;
+  --accent-hover: #ff6b6b;
+  --text: #eee;
+  --text-muted: #a0a0a0;
+  --radius: 12px;
+  --safe-top: env(safe-area-inset-top, 0);
+  --safe-bottom: env(safe-area-inset-bottom, 0);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  min-height: 100dvh;
+  font-family: "PT Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  padding: var(--safe-top) 0 var(--safe-bottom);
+  overflow-x: hidden;
+}
+
+.app {
+  max-width: 520px;
+  margin: 0 auto;
+  padding: 0 16px 24px;
+}
+
+/* Header */
+.header {
+  text-align: center;
+  padding: 20px 0 16px;
+}
+
+.header h1 {
+  margin: 0;
+  font-size: 1.6rem;
+  font-weight: 700;
+}
+
+.subtitle {
+  margin: 6px 0 0;
+  color: var(--text-muted);
+  font-size: 0.95rem;
+}
+
+/* Search */
+.search-wrap {
+  margin-bottom: 16px;
+}
+
+#search {
+  width: 100%;
+  padding: 14px 16px;
+  font-size: 16px; /* avoids iOS zoom on focus */
+  font-family: inherit;
+  border: 2px solid var(--surface);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+#search::placeholder {
+  color: var(--text-muted);
+}
+
+#search:focus {
+  border-color: var(--accent);
+}
+
+/* Loading / empty */
+.loading,
+.no-results {
+  text-align: center;
+  padding: 32px 16px;
+  color: var(--text-muted);
+}
+
+.no-results {
+  display: none;
+}
+
+.no-results.visible {
+  display: block;
+}
+
+/* Meme grid - touch-friendly */
+.meme-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  padding-bottom: 20px;
+}
+
+.meme-card {
+  aspect-ratio: 1;
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--surface);
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: transform 0.15s, border-color 0.15s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.meme-card:active {
+  transform: scale(0.98);
+}
+
+.meme-card:focus-visible {
+  border-color: var(--accent);
+  outline: none;
+}
+
+.meme-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.meme-card span {
+  display: block;
+  padding: 8px;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  line-height: 1.2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Editor section */
+.editor-section {
+  padding-top: 8px;
+}
+
+.back-btn {
+  margin-bottom: 16px;
+  padding: 10px 14px;
+  font-size: 0.95rem;
+  font-family: inherit;
+  background: var(--surface);
+  color: var(--text);
+  border: none;
+  border-radius: var(--radius);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.back-btn:active {
+  opacity: 0.9;
+}
+
+.canvas-wrap {
+  background: var(--surface);
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin-bottom: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+  position: relative;
+}
+
+.canvas-loading {
+  position: absolute;
+  color: var(--text-muted);
+  font-size: 0.95rem;
+}
+
+.canvas-loading.hidden {
+  display: none;
+}
+
+#canvas {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  border-radius: var(--radius);
+}
+
+.editor-controls label {
+  display: block;
+  margin-bottom: 14px;
+}
+
+.editor-controls label span {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+.editor-controls input {
+  width: 100%;
+  padding: 14px 16px;
+  font-size: 16px;
+  font-family: inherit;
+  border: 2px solid var(--surface);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.editor-controls input:focus {
+  border-color: var(--accent);
+}
+
+.editor-controls input::placeholder {
+  color: var(--text-muted);
+}
+
+.editor-actions {
+  margin-top: 20px;
+}
+
+.btn-primary {
+  width: 100%;
+  padding: 16px 24px;
+  font-size: 1rem;
+  font-weight: 700;
+  font-family: inherit;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background 0.2s;
+}
+
+.btn-primary:hover {
+  background: var(--accent-hover);
+}
+
+.btn-primary:active {
+  transform: scale(0.99);
+}
+
+/* Slightly larger tap targets on bigger screens */
+@media (min-width: 400px) {
+  .meme-grid {
+    gap: 14px;
+  }
+
+  .meme-card span {
+    font-size: 0.85rem;
+  }
+}
+
+@media (min-width: 520px) {
+  .app {
+    padding: 0 20px 32px;
+  }
+
+  .header h1 {
+    font-size: 1.8rem;
+  }
+}
